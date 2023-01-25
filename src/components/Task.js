@@ -6,7 +6,7 @@ import TasksContainer from "./TasksContainer";
 
 import Nav from "./Nav";
 
-// import socketIO from "socket.io-client";
+import socketIO from "socket.io-client";
 
 
 /*
@@ -17,7 +17,7 @@ import Nav from "./Nav";
 
 */
 
-// const socket = socketIO.connect("http://localhost:4000");
+const socket = socketIO.connect("http://localhost:4000");
 
 
 const Task = () => {
@@ -28,10 +28,10 @@ const Task = () => {
 
             <Nav />
 
-            {/* <AddTask socket={socket} /> */}
-            <AddTask    />
-            {/* <TasksContainer socket={socket} /> */}
-            <TasksContainer/>
+            <AddTask socket={socket} />
+          
+            <TasksContainer socket={socket} />
+           
         </div>
 
     );
