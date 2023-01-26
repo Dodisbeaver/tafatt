@@ -9,7 +9,7 @@ function App() {
   return (
     <BrowserRouter>
 
-    <Routes>
+      <Routes>
 
         <Route path='/' element={<Login />} />
 
@@ -17,7 +17,7 @@ function App() {
 
         <Route path='/comments/:category/:id' element={<Comments />} />
 
-    </Routes>
+      </Routes>
 
 </BrowserRouter>
   );
