@@ -15,7 +15,7 @@ async function deleteTodo(id) {
 }
 
 async function updateTodo(id, payload) {
-  const { data: newTodo } = await axios.put(`${API_URL+'/tasks'}${id}`, payload)
+  const { data: newTodo } = await axios.patch(`${API_URL+'/tasks/'}${id}`, payload)
   return newTodo
 }
 

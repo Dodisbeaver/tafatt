@@ -1,49 +1,29 @@
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
+import APIHelper from "../Api.js"
 
 const Task= (prop) => {
+   const [tasks, setTodos] = useState([])
 
-    // const [task, setTask] = useState("");
-
-
-    // const handleAddTodo = (e) => {
-
-    //     e.preventDefault();
-
-    //     //👇🏻 Logs the task to the console
-
-    //     console.log({ task });
-
-    //     setTask("");
-
-    // };
+ 
+      useEffect(() => {
+        const fetchTodoAndSetTodos = async () => {
+          const todos = await APIHelper.getAllTodos()
+          setTodos(todos)
+        }
+        fetchTodoAndSetTodos()
+      }, [])
 
     return (
 
-        <div key={prop.task._id} className={`${prop.task.title}__items`}>
+        <div  className={`${prop.task.title}__items`}>
 
-            <label htmlFor='task'>{prop.task.task}</label>
-            
-            {/* <input
+            <h3 >{prop.task.task}</h3>
+            <p>{prop.task.username}</p>
 
-                type='text'
-
-                name='task'
-
-                id='task'
-
-                // value={task}
-
-                className='input'
-
-                required
-
-                // onChange={(e) => setTask(e.target.value)}
-
-            />
-
-            <button className='addTodoBtn'>ADD TODO</button> */}
-
+           
+            <button type="button"  onClick={e => updateTodo(e, prop.task._id)}  >Hepp</button>
+          
+    
         </div>
 
     );

@@ -11,6 +11,11 @@ function TasksContainer() {
   useEffect(() => {
     const fetchTodoAndSetTodos = async () => {
       const todos = await APIHelper.getAllTodos()
+      const list = [[],[],[]]
+      todos.forEach(todo => {
+      list[todo.index].push(todo) 
+      });
+      console.log(list)
       setTodos(todos)
     }
     fetchTodoAndSetTodos()
@@ -43,18 +48,20 @@ function TasksContainer() {
       e.stopPropagation()
       await APIHelper.deleteTodo(id)
       setTodos(tasks.filter(({ _id: i }) => id !== i))
-    } catch (err) {}
+    } catch (err) { }
   }
-
-  const updateTodo = async (e, id) => {
+  const updateTodo = async (e, id, board) => {
+    console.log(board)
     e.stopPropagation()
     const payload = {
-      completed: !tasks.find(todo => todo._id === id).completed,
+      index: ++tasks.find(todo => todo._id === id).index,
+      title: board
     }
     const updatedTodo = await APIHelper.updateTodo(id, payload)
     setTodos(tasks.map(todo => (todo._id === id ? updatedTodo : todo)))
+    
   }
-  
+
   return (
     <div className="container">
       {/* <div>
@@ -69,40 +76,44 @@ function TasksContainer() {
         </button>
       </div> */}
       {boards.map((board) => (
+        <div
+          key={board.index}
+          // onClick={e => updateTodo(e, _id)}
+          className={`${board.title.toLowerCase()}__wrapper`}
+
+        >
+          <h3>{board.title}</h3>
           <div
-            key={board.index}
-            // onClick={e => updateTodo(e, _id)}
-            className={`${board.title.toLowerCase()}__wrapper`}
-            
-          >
-             <h3>{board.title}</h3>
-            <div
             className={`${board.title.toLowerCase()}__container`}
-            
-            >
-                {tasks.map((task) =>  (
-                    task.index === board.index 
-                    ? (<Task   task={task}></Task>)
-                    : null
-                )
-                )}
-               
-               
-            </div>
-          </div>
-        ))}
-      {/* <ul>
-        {todos.map(({ _id, task, completed }, i) => (
-          <li
-            key={i}
-            onClick={e => updateTodo(e, _id)}
-            className={completed ? "completed" : ""}
+
           >
-            {task} <span onClick={e => deleteTodo(e, _id)}>X</span>
-          </li>
-        ))}
-      </ul> */}
-      
+            {tasks.map((task) => (
+              task.index === board.index
+                ? (<div key={task._id} task={task} className={`${task.title}__items`}>
+
+
+                 
+
+                    <h3 >{task.task}</h3>
+                    <p>{task.username}</p>
+
+
+                    <button type="button" onClick={e => updateTodo(e, task._id, boards[board.index+1 ].title.toLowerCase())}  >Hepp</button>
+
+
+
+
+                </div>)
+                : null
+            )
+            )}
+
+
+          </div>
+        </div>
+      ))}
+
+
     </div>
   )
 }
