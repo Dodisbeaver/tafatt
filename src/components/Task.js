@@ -1,37 +1,49 @@
-import React from "react";
-
-import AddTask from "./AddTask";
-
-import TasksContainer from "./TasksContainer";
-
-import Nav from "./Nav";
-
-// import socketIO from "socket.io-client";
+import React, { useState } from "react";
 
 
-/*
+const Task= (prop) => {
 
-👇🏻  Pass Socket.io into the required components
-
-    where communications are made with the server
-
-*/
-
-// const socket = socketIO.connect("http://localhost:4000");
+    // const [task, setTask] = useState("");
 
 
-const Task = () => {
+    // const handleAddTodo = (e) => {
+
+    //     e.preventDefault();
+
+    //     //👇🏻 Logs the task to the console
+
+    //     console.log({ task });
+
+    //     setTask("");
+
+    // };
 
     return (
 
-        <div>
+        <div key={prop.task._id} className={`${prop.task.title}__items`}>
 
-            <Nav />
+            <label htmlFor='task'>{prop.task.task}</label>
+            
+            {/* <input
 
-            {/* <AddTask socket={socket} /> */}
-            <AddTask    />
-            {/* <TasksContainer socket={socket} /> */}
-            <TasksContainer/>
+                type='text'
+
+                name='task'
+
+                id='task'
+
+                // value={task}
+
+                className='input'
+
+                required
+
+                // onChange={(e) => setTask(e.target.value)}
+
+            />
+
+            <button className='addTodoBtn'>ADD TODO</button> */}
+
         </div>
 
     );
