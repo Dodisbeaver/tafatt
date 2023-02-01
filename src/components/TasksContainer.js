@@ -51,7 +51,7 @@ function TasksContainer() {
     } catch (err) { }
   }
   const updateTodo = async (e, id, board) => {
-    console.log(board)
+    // console.log(board)
     e.stopPropagation()
     const payload = {
       index: ++tasks.find(todo => todo._id === id).index,
@@ -59,8 +59,10 @@ function TasksContainer() {
     }
     const updatedTodo = await APIHelper.updateTodo(id, payload)
     setTodos(tasks.map(todo => (todo._id === id ? updatedTodo : todo)))
-    
+    window.location.reload(false);
   }
+
+ 
 
   return (
     <div className="container">
@@ -98,7 +100,7 @@ function TasksContainer() {
                     <p>{task.username}</p>
 
 
-                    <button type="button" onClick={e => updateTodo(e, task._id, boards[board.index+1 ].title.toLowerCase())}  >Hepp</button>
+                    <button type="button" onClick={e => updateTodo(e, task._id, boards[board.index+1 ].title.toLowerCase())}  >{'\u21A3'}</button>
 
 
 
