@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-
+import Tasks from "./Tasks";
 
 
 // fake data generator
@@ -27,7 +27,7 @@ const TasksContainer = ({ socket }) => {
 
     useEffect(() => {
         function fetchTasks() {
-            fetch("http://localhost:4000/api")
+            fetch("http://localhost:4000/boards")
                 .then((res) => res.json())
                 .then((data) => setTasks(data));
         }
@@ -66,37 +66,34 @@ const TasksContainer = ({ socket }) => {
     //handles dragginng to dropping 
     const handleDragEnd = ({ destination, source }) => {
 
-        // // dropped outside the list
-        // if (!destination) {
-        //     return;
-        // }
-        // const sInd = +source.droppableId;
-        // const dInd = +destination.droppableId;
+        // dropped outside the list
+        if (!destination) {
+            return;
+        }
+        const sInd = +source.droppableId;
+        const dInd = +destination.droppableId;
 
-        // if (sInd === dInd) {
-        //     const items = reorder(tasks[sInd], source.index, destination.index);
-        //     const newState = [...tasks];
-        //     newState[sInd] = items;
-        //     setTasks(newState);
-        // } else {
-        //     const result = move(tasks[sInd], tasks[dInd], source, destination);
-        //     const newState = [...tasks];
-        //     newState[sInd] = result[sInd];
-        //     newState[dInd] = result[dInd];
+        if (sInd === dInd) {
+            const items = reorder(tasks[sInd], source.index, destination.index);
+            const newState = [...tasks];
+            newState[sInd] = items;
+            setTasks(newState);
+        } else {
+            const result = move(tasks[sInd], tasks[dInd], source, destination);
+            const newState = [...tasks];
+            newState[sInd] = result[sInd];
+            newState[dInd] = result[dInd];
 
-        //     setTasks(newState.filter(group => group.length));
-        // }
-		if (!destination) return;
-		if (
-			destination.index === source.index &&
-			destination.droppableId === source.droppableId
-		)
-			return;
+            setTasks(newState.filter(group => group.length));
+        }
+		// if (!destination) return;
+		// if (
+		// 	destination.index === source.index &&
+		// 	destination.droppableId === source.droppableId
+		// )
+		// 	return;
 
-		socket.emit("taskDragged", {
-			source,
-			destination,
-		});
+	
         socket.emit("taskDragged", {
             source,
             destination,
@@ -129,21 +126,23 @@ const TasksContainer = ({ socket }) => {
                 </button>
             </div>
             <DragDropContext onDragEnd={handleDragEnd}>
-                {taskArr.map((task, ind) => (
+                {Object.entries(tasks).map((task, ind) => (
                     
                     <div
-                        className={`${task[0].title.toLowerCase()}__wrapper`}
-                        key={task[0].id}
+                        className={`${task[1].title.toLowerCase()}__wrapper`}
+                        key={ind.toString()}
                         >
-                        <h3>{task[0].title} Tasks</h3>
+                        <h3>{task[1].title} Tasks</h3>
                         
-                   
-                        <Droppable key={task[0].id} droppableId={`${taskArr.indexOf(task)}`}>
+                   <Tasks socket = {socket} ondragEnd = {handleDragEnd}/>
+                        {/* <Droppable key={ind.toString()} droppableId={task[1]._id}>
+
                             {(provided, snapshot) => (
                                 
                                 <div
-                                    className={`${task[0].title.toLowerCase()}__container`}
+                                    className={`${task[1].title.toLowerCase()}__container`}
                                     ref={provided.innerRef}
+                                    key={ind.toString()}
                                 >
                                   
                                     {task.map((item, index) => (
@@ -158,33 +157,13 @@ const TasksContainer = ({ socket }) => {
                                                     ref={provided.innerRef}
                                                     {...provided.draggableProps}
                                                     {...provided.dragHandleProps}
-                                                    className={`${task[0].title.toLowerCase()}__items`}
+                                                    className={`${task[1].title.toLowerCase()}__items`}
 
                                                 >
                                                     <div>                                                  
                                                         <h3>{item.username}</h3>
                                                         <p>{item.task}</p>
-                                                        {/* <p className='comment'>
-                                                            <Link
-                                                                to={`/comments/${task[1].title}/${item.id}`}
-                                                            >
-                                                                {item.comments.length > 0
-                                                                    ? `View Comments`
-                                                                    : "Add Comment"}
-                                                            </Link>
-                                                        </p> */}
-                                                        {/* <button
-                                                            type="button"
-                                                            onClick={() => {
-                                                                const newState = [...tasks];
-                                                                // newState[ind].splice(index, 1);
-                                                                setTasks(
-                                                                    newState.filter(group => group.length)
-                                                                );
-                                                            }}
-                                                        >
-                                                            delete
-                                                        </button> */}
+                                         
                                                     </div>
                                                 </div>
                                             )}
@@ -193,7 +172,7 @@ const TasksContainer = ({ socket }) => {
                                     {provided.placeholder}
                                 </div>
                             )}
-                        </Droppable>
+                        </Droppable> */}
                     </div>
                 ))}
             </DragDropContext>
