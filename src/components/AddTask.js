@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-
+import "../App.css"
+import APIHelper from "../Api.js"
 
 const AddTask = ({ socket }) => {
 
-    const [task, setTask] = useState("");
+    const [task, setTodo] = useState("");
 
 
     const handleAddTodo = (e) => {
@@ -14,33 +15,52 @@ const AddTask = ({ socket }) => {
 
         console.log({ task });
 
-        setTask("");
+        setTodo("");
 
     };
 
+    const createTodo = async e => {
+        e.preventDefault()
+        if (!task) {
+          alert("please enter something")
+          return
+        }
+        // if (task.some(({ task }) => task === task)) {
+        //   alert(`Task: ${task} already exists`)
+        //   return
+        // }
+        const newTodo = await APIHelper.createTodo(task)
+        setTodo([...task, newTodo])
+      }
+
     return (
 
-        <form className='form__input' onSubmit={handleAddTodo}>
+        <form className='form__input' onSubmit={createTodo}>
 
-            <label htmlFor='task'>Add Todo</label>
 
-            <input
+            <label htmlFor='task'>Add Todo
+                <input
 
-                type='text'
+                    type='text'
 
-                name='task'
+                    name='task'
 
-                id='task'
+                    id='task'
 
-                value={task}
+                    value={task}
 
-                className='input'
+                    className='input'
 
-                required
+                    required
 
-                onChange={(e) => setTask(e.target.value)}
+                    onChange={(e) => setTodo(e.target.value)}
 
-            />
+                />
+            </label>
+            <label htmlFor="username">For who?
+                <input type='text' name="username"  className="input" ></input>
+            </label>
+
 
             <button className='addTodoBtn'>ADD TODO</button>
 
