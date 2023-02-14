@@ -31,6 +31,7 @@ const AddTask = ({ socket }) => {
         // }
         const newTodo = await APIHelper.createTodo(task)
         setTodo([...task, newTodo])
+        window.location.reload(false);
       }
 
     return (
