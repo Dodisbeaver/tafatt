@@ -11,7 +11,7 @@ function TasksContainer() {
   useEffect(() => {
     const fetchTodoAndSetTodos = async () => {
       const todos = await APIHelper.getAllTodos()
-      const list = [[],[],[]]
+      const list = [[],[],[],[]]
       todos.forEach(todo => {
       list[todo.index].push(todo) 
       });
@@ -100,7 +100,7 @@ function TasksContainer() {
                     <p>{task.username}</p>
 
 
-                    <button type="button" onClick={e => updateTodo(e, task._id, boards[board.index+1 ].title.toLowerCase())}  >{'\u21A3'}</button>
+                    <button type="button" onClick={e => updateTodo(e, task._id, tasks[task.index+1 ].title.toLowerCase())}  >{'\u21A3'}</button>
 
 
 
