@@ -5,13 +5,7 @@ const Task= (prop) => {
    const [tasks, setTodos] = useState([])
 
  
-      useEffect(() => {
-        const fetchTodoAndSetTodos = async () => {
-          const todos = await APIHelper.getAllTodos()
-          setTodos(todos)
-        }
-        fetchTodoAndSetTodos()
-      }, [])
+ 
 
     return (
 
@@ -21,7 +15,7 @@ const Task= (prop) => {
             <p>{prop.task.username}</p>
 
            
-            <button type="button"  onClick={e => updateTodo(e, prop.task._id)}  >Hepp</button>
+            <button type="button"    >Hepp</button>
           
     
         </div>
