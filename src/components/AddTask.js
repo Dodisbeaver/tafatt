@@ -5,6 +5,7 @@ import APIHelper from "../Api.js"
 const AddTask = ({ socket }) => {
 
     const [task, setTodo] = useState("");
+    const [username, setUser] = useState("");
 
 
     const handleAddTodo = (e) => {
@@ -21,16 +22,22 @@ const AddTask = ({ socket }) => {
 
     const createTodo = async e => {
         e.preventDefault()
+       
         if (!task) {
           alert("please enter something")
           return
         }
+        if (!username) {
+            alert("please enter something")
+            return
+          }
         // if (task.some(({ task }) => task === task)) {
         //   alert(`Task: ${task} already exists`)
         //   return
         // }
-        const newTodo = await APIHelper.createTodo(task)
-        setTodo([...task, newTodo])
+        const newTodo = await APIHelper.createTodo(task,username)
+        setTodo("")
+        setUser("")
         window.location.reload(false);
       }
 
@@ -59,7 +66,7 @@ const AddTask = ({ socket }) => {
                 />
             </label>
             <label htmlFor="username">For who?
-                <input type='text' name="username"  className="input" ></input>
+                <input type='text' name="username" id='username' value={username} className="input" required onChange={(e) => setUser(e.target.value)} />
             </label>
 
 
